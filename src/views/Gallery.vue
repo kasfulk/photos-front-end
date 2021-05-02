@@ -6,18 +6,28 @@
       <option
         v-for="album in album"
         :key="album.albumId"
-        :value="album.albumId"
+        :v-bin:value="album.albumId"
+        :selected="album.albumId == 1"
       >
         {{ album.albumId }}
       </option>
     </select>
   </div>
-  <div class="row d-flex justify-content-around">
+  <div class="row d-flex px-5 justify-content-around">
     <div v-for="photo in photos" :key="photo.id">
       <a :href="photo.url" class="link-gambar p-0" :title="photo.title">
         <img :src="photo.thumbnailUrl" class="w-100 m-1 p-0" loading="lazy"
       /></a>
     </div>
+  </div>
+  <div class="row mt-3 mx-4 d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li v-for="page in Pages" class="page-item" :key="page.page">
+          <a class="page-link" href="#" @click="paginate()">{{ page.page }}</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -29,7 +39,8 @@ export default {
   name: "Gallery",
   setup() {
     const photos = ref([]);
-    const album = ref([]);
+    const album = ref([1]);
+    const Pages = ref([]);
 
     const loadAlbum = async () => {
       try {
@@ -40,9 +51,16 @@ export default {
       }
     };
 
-    const loadPhotos = async (albumId = 1) => {
+    const loadPhotos = async (albumId = 1, pagination = 1) => {
       try {
-        const response = await api(`/photos/${albumId}/2`);
+        const response = await api(`/photos/${albumId}/${pagination}`);
+        let pages = [];
+        for (let i = 1; i <= response.data.totalPage; i++) {
+          pages.push({
+            page: i,
+          });
+        }
+        Pages.value = pages;
         photos.value = response.data.data;
       } catch (err) {
         console.error(err);
@@ -54,11 +72,14 @@ export default {
       await loadPhotos();
     });
 
-    return { photos, album };
+    return { photos, album, loadPhotos, Pages };
   },
   methods: {
     onchange: function () {
-      console.log(this.key);
+      this.loadPhotos(this.key);
+    },
+    paginate: function () {
+      console.log(this);
     },
   },
 };
