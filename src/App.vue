@@ -3,12 +3,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="mx-5 navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="/"
-            >Home <span class="sr-only">(current)</span></a
+          <router-link class="nav-link" to="/"
+            >Home <span class="sr-only">(current)</span></router-link
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/Gallery">Gallery</a>
+          <router-link class="nav-link" to="/Gallery">Gallery</router-link>
         </li>
       </ul>
     </div>
@@ -36,5 +36,28 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+.modal-content {
+  width: 700px !important;
+}
+
+.link-gambar {
+  cursor: pointer;
+}
+
+.modal-dialog {
+  max-width: 700px !important;
+  margin: 5% 25% !important;
+}
+
+.modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start!important;
+    padding: 0.75rem;
+    border-top: 0px solid #dee2e6!important;
+    border-bottom-right-radius: calc(0.3rem - 1px);
+    border-bottom-left-radius: calc(0.3rem - 1px);
 }
 </style>
