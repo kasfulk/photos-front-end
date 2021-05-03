@@ -103,7 +103,13 @@
         </div>
         <div class="modal-footer row">
           <div class="col-sm-6 d-flex justify-content-start">
-            <button type="button" class="btn btn-info">Edit</button>&nbsp;
+            <button
+              type="button"
+              class="btn btn-info"
+              @click="editPhoto(image.id)"
+            >
+              Edit</button
+            >&nbsp;
             <button
               type="button"
               class="btn btn-danger"
@@ -174,6 +180,12 @@ export default {
       }
     };
 
+    const editPhoto = async (id) => {
+      let element = $("#photoModal");
+      $(element).modal("hide");
+      $router.push({ name: "EditPhoto", params: { id: id } });
+    };
+
     const deletePhoto = async (id) => {
       try {
         if (confirm("Are you sure")) {
@@ -211,6 +223,7 @@ export default {
       selectedalbum,
       loadPhoto,
       deletePhoto,
+      editPhoto,
     };
   },
   methods: {

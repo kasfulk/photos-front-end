@@ -3,6 +3,7 @@
     <div class="col-sm-6">
       <form>
         <div class="form-group row">
+          <input type="hidden" v-model="id" />
           <label for="albumId" class="col-4 col-form-label">Album ID</label>
           <div class="col-8">
             <select
@@ -132,7 +133,7 @@ export default {
 
     const submit = async (data) => {
       try {
-        await api.post("/photos/add", data);
+        await api.post("/photos/edit", data);
         router.push({ name: "Gallery", params: { albumId: data.albumId } });
       } catch (err) {
         console.log(err);
@@ -165,6 +166,7 @@ export default {
     },
     submitPhoto: function () {
       const data = {
+        id: this.id,
         albumId: this.selectedalbum,
         title: this.title,
         url: this.url,
@@ -173,9 +175,13 @@ export default {
       this.submit(data);
     },
     getData: async function () {
-      const response = await api("/photos-view/354");
+      const $router = useRouter();
+      const idParams = $router.currentRoute._rawValue.params.id;
+      const response = await api(`/photos-view/${idParams}`);
       const fieldData = response.data[0];
+
       console.log(fieldData);
+      this.id = fieldData.id;
       this.selectedalbum = fieldData.albumId;
       this.title = fieldData.title;
       this.url = fieldData.url;
